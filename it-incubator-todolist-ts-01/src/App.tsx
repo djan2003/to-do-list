@@ -19,17 +19,16 @@ function App() {
         {id: v1(), title: "DDD", isDone: true},
     ])
 
-    function addTask(newTaskTitle:string) {
+    function addTask(newTaskTitle: string) {
         const newTask: TaskType = {
             id: v1(),
-            title:newTaskTitle,
-            isDone:false
+            title: newTaskTitle,
+            isDone: false
 
         }
         setTasks([newTask, ...tasks])
 
     }
-
 
 
     function removeTask(taskId: string) {
@@ -50,13 +49,25 @@ function App() {
     if (filter === "completed") {
         tasksForTodolist = tasks.filter(t => t.isDone == true);
     }
+
+    function changeStatuse(taskId: string, isDone: boolean) {
+        const task = tasks.find(t => t.id === taskId)
+        if (task) {
+            task.isDone = isDone;
+            setTasks([...tasks])
+        }
+    }
+
     return (
         <div className="App">
-            <TodoList tasks={tasksForTodolist}
-                      title={"What to learn"}
-                      removeTask={removeTask}
-                      chancheFilter={chancheFilter}
-                      addTask={addTask}
+            <TodoList
+                filter={filter}
+                tasks={tasksForTodolist}
+                title={"What to learn"}
+                removeTask={removeTask}
+                chancheFilter={chancheFilter}
+                addTask={addTask}
+                changeStatuse={changeStatuse}
             />
         </div>
     );
