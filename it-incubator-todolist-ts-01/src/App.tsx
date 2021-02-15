@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import TodoList from "./Todolist";
 import {v1} from "uuid";
+import AddItemsForm from "./AddItemForm";
 
 export type TaskType = {
     id: string
@@ -53,6 +54,19 @@ function App() {
 
     }
 
+    const addToDoList = (todollistTitle: string) => {
+        const todolistID = v1();
+        const newTodolist: ToDoListType = {
+            id: todolistID,
+            title: todollistTitle,
+            filter: "All"
+        }
+        setTodoLists([...todoLists, newTodolist])
+        setTasks({
+            ...tasks,
+            [todolistID]: []
+        })
+    }
 
     function removeTask(taskId: string, todolistID: string) {
         tasks[todolistID] = tasks[todolistID].filter(task => task.id !== taskId)
@@ -86,6 +100,23 @@ function App() {
         }
     }
 
+    function changeTaskTitle(taskId: string, title: string, todolistID: string) {
+        const todoListTasks = tasks[todolistID]
+        const task = todoListTasks.find(t => t.id === taskId)
+        if (task) {
+            task.title = title;
+            setTasks({...tasks})
+        }
+    }
+
+    function changeTodolistTitle(title: string, todolistID: string) {
+        const todolist = todoLists.find(tl => tl.id === todolistID)
+        if (todolist) {
+            todolist.title = title;
+            setTodoLists([...todoLists])
+        }
+    }
+
     function removeTodolist(todolistID: string) {
         setTodoLists(todoLists.filter(tl => tl.id !== todolistID))
         delete tasks[todolistID]
@@ -93,6 +124,7 @@ function App() {
 
     return (
         <div className="App">
+            <AddItemsForm addItem={addToDoList}/>
             {
                 todoLists.map(tl => {
                     let tasksForTodolist = tasks[tl.id]
@@ -112,6 +144,8 @@ function App() {
                             title={tl.title}
                             removeTask={removeTask}
                             chancheFilter={chancheFilter}
+                            changeTaskTitle={changeTaskTitle}
+                            changeTodolistTitle={changeTodolistTitle}
                             addTask={addTask}
                             changeStatuse={changeStatuse}
                         />)
