@@ -20,7 +20,7 @@ export type TasksStateType = {
 
 function App() {
     let todolistId1 = v1();
-     let todolistId2 = v1();
+    let todolistId2 = v1();
 
     let [todolists, setTodolists] = useState<Array<TodolistType>>([
         {id: todolistId1, title: "What to learn", filter: "all"},
@@ -37,7 +37,6 @@ function App() {
             {id: v1(), title: "React Book", isDone: true}
         ]
     });
-
 
     function removeTask(id: string, todolistId: string) {
         //достанем нужный массив по todolistId:
@@ -83,7 +82,6 @@ function App() {
             setTasks({...tasks});
         }
     }
-
 
     function changeFilter(value: FilterValuesType, todolistId: string) {
         let todolist = todolists.find(tl => tl.id === todolistId);
